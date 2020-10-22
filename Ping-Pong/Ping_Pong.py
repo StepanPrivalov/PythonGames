@@ -1,4 +1,5 @@
 import turtle
+#Game without sounds
 
 wn = turtle.Screen()
 wn.title = ("Ping-Pong")
@@ -6,6 +7,8 @@ wn.bgcolor("black")
 wn.setup(width = 800, height = 600)
 wn.tracer(0)
 
+score1 = 0
+score2 = 0
 
 paddle1 = turtle.Turtle()
 paddle1.speed(0)
@@ -33,6 +36,15 @@ ball.penup()
 ball.goto(0, 0)
 ball.dx = 1
 ball.dy = 1
+
+pen = turtle.Turtle()
+pen.speed(0)
+pen.color("white")
+pen.penup()
+pen.hideturtle()
+pen.goto(0, 255)
+pen.write("Player A:0     Player B:0", align = "center", font = ("Bell MT", 24, "normal"))
+
 
 def paddle1_up():
     y = paddle1.ycor()
@@ -65,11 +77,14 @@ while 1:
     wn.update()
     ball.setx(ball.xcor() + ball.dx)
     ball.sety(ball.ycor() + ball.dy)
+   
 
 
     if ball.ycor() > 290:
         ball.sety(290)
         ball.dy *= -1
+       
+      
 
     if ball.ycor() < -290:
         ball.sety(-290)
@@ -78,11 +93,21 @@ while 1:
     if ball.xcor() > 390:
         ball.goto(0, 0)
         ball.dx *= -1
+        score1 += 1
+        pen.clear()
+        pen.write("Player A:{}     Player B:{}".format(score1, score2), align = "center", font = ("Bell MT", 24, "normal"))
 
     if ball.xcor() < -390:
         ball.goto(0, 0)
         ball.dx *= -1
+        score2 += 1
+        pen.clear()
+        pen.write("Player A:{}     Player B:{}".format(score1, score2), align = "center", font = ("Bell MT", 24, "normal"))
 
     if (ball.xcor() > 340 and ball.xcor() < 350) and (ball.ycor() < paddle2.ycor() + 40 and ball.ycor() > paddle2.ycor() - 40):
         ball.setx(340)
+        ball.dx *= -1
+
+    if (ball.xcor() < -340 and ball.xcor() > -350) and (ball.ycor() < paddle1.ycor() + 40 and ball.ycor() > paddle1.ycor() - 40):
+        ball.setx(-340)
         ball.dx *= -1
