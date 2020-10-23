@@ -1,4 +1,5 @@
 import turtle
+import winsound
 #Game without sounds
 
 wn = turtle.Screen()
@@ -14,7 +15,7 @@ paddle1 = turtle.Turtle()
 paddle1.speed(0)
 paddle1.shape("square")
 paddle1.color("white")
-paddle1.shapesize(stretch_wid = 5, stretch_len = 1)
+paddle1.shapesize(stretch_wid = 4, stretch_len = 1)
 paddle1.penup()
 paddle1.goto(-350, 0)
 
@@ -23,7 +24,7 @@ paddle2 = turtle.Turtle()
 paddle2.speed(0)
 paddle2.shape("square")
 paddle2.color("white")
-paddle2.shapesize(stretch_wid = 5, stretch_len = 1)
+paddle2.shapesize(stretch_wid = 4, stretch_len = 1)
 paddle2.penup()
 paddle2.goto(350, 0)
 
@@ -74,8 +75,8 @@ wn.onkeypress(paddle2_down, "Down")
 
 while 1:
 
-    wn.update()
     ball.setx(ball.xcor() + ball.dx)
+    wn.update()
     ball.sety(ball.ycor() + ball.dy)
    
 
@@ -83,12 +84,13 @@ while 1:
     if ball.ycor() > 290:
         ball.sety(290)
         ball.dy *= -1
-       
+        winsound.PlaySound("ping.wav", winsound.SND_ASYNC)
       
 
     if ball.ycor() < -290:
         ball.sety(-290)
         ball.dy *= -1
+        winsound.PlaySound("ping.wav", winsound.SND_ASYNC)
 
     if ball.xcor() > 390:
         ball.goto(0, 0)
@@ -107,7 +109,9 @@ while 1:
     if (ball.xcor() > 340 and ball.xcor() < 350) and (ball.ycor() < paddle2.ycor() + 40 and ball.ycor() > paddle2.ycor() - 40):
         ball.setx(340)
         ball.dx *= -1
+        winsound.PlaySound("ping.wav", winsound.SND_ASYNC)
 
     if (ball.xcor() < -340 and ball.xcor() > -350) and (ball.ycor() < paddle1.ycor() + 40 and ball.ycor() > paddle1.ycor() - 40):
         ball.setx(-340)
         ball.dx *= -1
+        winsound.PlaySound("ping.wav", winsound.SND_ASYNC)
