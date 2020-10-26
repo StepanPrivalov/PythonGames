@@ -51,7 +51,7 @@ class snake(object):
 						self.turns.pop(p)
 
 	def reset(self):
-
+		pass
 
 
 def drawGrid(w, rows, surface):
