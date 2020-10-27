@@ -3,6 +3,30 @@ import math
 import random
 import tkinter
 
+class cube(object):
+	rows = 20
+	w = 500
+
+	def init(self, start, dirnx = 1, dirny = 0, color = (255, 0, 0)):
+		self.pos = start
+		self.dirnx = 1
+		self.dirny = 0
+		self.color = color
+
+
+	def move(self, dirnx, dirny):
+		self.dirnx = dirnx
+		self.dirny = dirny
+		self.pos(self.pos[0] + self.dirnx, self.pos[1] + self.dirny)
+
+	def draw(self, surface, eyes = False):
+		dis = self.w // self.rows
+		i = self.pos[0]
+		j = self.pos[1]
+
+		pygame.draw.rect(surface, self.colour, (i * dis + 1, j * dis + 1, dis - 2, dis - 2))
+
+
 class snake(object):
 	body = []
 	turns = {}
@@ -53,7 +77,6 @@ class snake(object):
 	def reset(self):
 		pass
 
-
 def drawGrid(w, rows, surface):
 	sizeBtwn = w // rows
 	x, y = 0, 0
@@ -66,8 +89,9 @@ def drawGrid(w, rows, surface):
 		pygame.draw.line(surface, (255,255,255), (0, y),(w, y))
 
 def redrawWindow(surface):
-	global width, rows
+	global width, rows, s
 	surface.fill((0,0,0))
+	s.draw(surface)
 	drawGrid(width, rows, surface)
 	pygame.display.update()
 
