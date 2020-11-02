@@ -128,8 +128,8 @@ def create_grid(locked_pos={}):
     grid = [[(0,0,0) for _ in range(10)] for _ in range(20)]
     for i in range(len(grid)):
         for j in range(len(grid[i])):
-            if (i, j) in locked_pos:
-                c = locked_pos[(i, j)]
+            if (j, i) in locked_pos:
+                c = locked_pos[(j, i)]
                 grid[i][j] = c
     return grid
  
@@ -199,9 +199,16 @@ def clear_rows(grid, locked):
             ind = i
             for j in range(len(row)):
                 try:
-                    del locked[i][j]
+                    del locked[(j, i)]
                 except:
                     continue
+
+    if inc > 0:
+        for key in sorted(list(locked), key = lambda z:z[1])[::-1]:
+            x, y = key
+            if y < ind:
+                newKey = (x, y + inc)
+                locked[newKey] = locked.pop(key)
 
 def draw_next_shape(shape, surface):
     font = pygame.font.SysFont("commicsans", 30)
@@ -215,7 +222,7 @@ def draw_next_shape(shape, surface):
         for j, column in enumerate(row):
             if column == "0":
                 pygame.draw.rect(surface, shape.color, (sx + j * block_size, sy + i * block_size, block_size, block_size), 0 )
-    surface.blit(label, (sx + 10, sy + 10 ))
+    surface.blit(label, (sx + 10, sy - 10 ))
 
 def draw_window(surface, grid):
     surface.fill((0, 0, 0))
@@ -231,7 +238,7 @@ def draw_window(surface, grid):
     pygame.draw.rect(surface, (255, 0, 0), (topLeftX, topLeftY, play_width, play_height, ), 4)
 
     draw_grid(surface, grid)
-    pygame.display.update()
+    #pygame.display.update()
  
 def main(win):
     locked_positions = {}
@@ -293,9 +300,11 @@ def main(win):
             current_piece = next_piece
             next_piece = get_shape()
             change_piece = False
+            clear_rows(grid, locked_positions)
         
         draw_window(win, grid)
         draw_next_shape(next_piece, win)
+        pygame.display.update()
 
         if check_lost(locked_positions):
             run = False
